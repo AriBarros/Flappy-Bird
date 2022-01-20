@@ -10,7 +10,21 @@
 
 <body class="content">
     <h1>Flappy Bird</h1>
-    <div wm-flappy></div>
+    <div wm-flappy>
+        <img 
+        class="bird" src="./img/bird.png" alt="bird">
+        <div class="barriers">
+            <div class="barrier">
+                <div class="body"></div>
+                <div class="border"></div>
+            </div>
+            <div class="barrier">
+                <div class="border"></div>
+                <div class="body"></div>
+            </div>
+        </div>
+        <div class="progress">100</div>
+    </div>
     <script src="js/flappy.js"></script>
 </body>
 
