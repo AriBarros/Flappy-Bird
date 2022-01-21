@@ -25,7 +25,7 @@ function Barriers(height, openSpace, x) {
     this.element.appendChild(this.superior.element)
     this.element.appendChild(this.inferior.element)
 
-    this.drawOpening = () => {
+    this.sortingOpening = () => {
         const superiorHeight = Math.random() * (height - openSpace)
         const inferiorHeight = height - openSpace - superiorHeight
         this.superior.setHeight(superiorHeight)
@@ -37,7 +37,7 @@ function Barriers(height, openSpace, x) {
     this.getWidth = () => this.element.clientWidth
 
 
-    this.drawOpening()
+    this.sortingOpening()
     this.setX(x)
 
 }
