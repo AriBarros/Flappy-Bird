@@ -42,9 +42,6 @@ function Barriers(height, openSpace, x) {
 
 }
 
-// const b = new Barriers(700, 200, 400)
-// document.querySelector('[wm-flappy]').appendChild(b.element)
-
 function BarriersOpening(height, width, openSpace, space, pointNotification) {
     this.pair = [
         new Barriers(height, openSpace, width),
@@ -107,6 +104,30 @@ function Progress() {
     this.scoreUpdate(0)
 } 
 
+function Overlapping(elementA, elementB) {
+    const a = elementA.getBoundingClientRect()
+    const b = elementB.getBoundingClientRect()
+
+    const horizontal = a.left + a.width >= b.left
+        && b.left + b.width >= a.left
+    const vertical = a.top + a.height >= b.top
+        && b.top + b.height >= a.top
+    return horizontal && vertical
+
+}
+
+function collide(bird, barriers) {
+    let collide = false
+    barriers.pair.forEach(Barriers => {
+        if (!collide) {
+            const superior = Barriers.superior.element
+            const inferior = Barriers.inferior.element
+            collide = Overlapping(bird.element, superior)
+                || Overlapping(bird.element, inferior)
+        }
+    })
+    return collide
+}
 
 function FlappyBird() {
     let points = 0
@@ -116,20 +137,24 @@ function FlappyBird() {
     const width = gameArea.clientWidth
 
     const progress = new Progress()
-    const barriersOpening = new BarriersOpening(height, width, 200, 400,
+    const barriers = new BarriersOpening(height, width, 200, 400,
         () => progress.scoreUpdate(++points))
     const bird = new Bird(height)
 
     gameArea.appendChild(progress.element)
     gameArea.appendChild(bird.element)
-    barriersOpening.pair.forEach(pair => gameArea.appendChild(pair.element))
+    barriers.pair.forEach(pair => gameArea.appendChild(pair.element))
     
     //Game loop
     this.start = () => {
         
         const temporizer = setInterval(() => {
-            barriersOpening.animation()
+            barriers.animation()
             bird.animation()
+
+            if(collide(bird, barriers)) {
+                clearInterval(temporizer)
+            }
         }, 20) 
     }
 }
