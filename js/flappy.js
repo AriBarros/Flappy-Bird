@@ -74,9 +74,40 @@ function BarriersOpening(height, width, openSpace, space, pointNotification) {
 
 }
 
+function Bird(gameHeight) {
+    let flying = false
+
+    this.element = newElement('img', 'bird')
+    this.element.src = 'img/bird.png'
+
+    this.getY  = () =>  parseInt(this.element.style.bottom.split('px')[0])
+    this.setY = y => this.element.style.bottom = `${y}px`
+
+    window.onkeydown = e => flying = true
+    window.onkeyup = e => flying = false
+
+    this.animation = () => {
+        const newY = this.getY() + (flying ? 8 : -5)
+        const maxHeight = gameHeight - this.element.clientHeight
+
+        if(newY <= 0) {
+            this.setY(0)
+        } else if (newY >= maxHeight) {
+            this.setY(maxHeight)
+        } else {
+            this.setY(newY)
+        }
+    }
+    this.setY(gameHeight / 2)
+}
+
 const barriersOpening = new BarriersOpening(700, 1200, 200, 400)
+const bird = new Bird(700)
 const gameArea = document.querySelector('[wm-flappy]')
+
+gameArea.appendChild(bird.element)
 barriersOpening.pair.forEach(pair => gameArea.appendChild(pair.element))
 setInterval(() => {
     barriersOpening.animation()
+    bird.animation()
 }, 20)
