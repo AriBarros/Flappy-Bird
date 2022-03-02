@@ -14,4 +14,4 @@ Controls:
 
 If you want to restart the game, just refresh the page.
   
-[Flappy Bird Project](capa.png)
+![Flappy Bird Project](capa.png)
